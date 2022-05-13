@@ -45,6 +45,7 @@ public:
   // check to see if there is any diagonal with same value
   bool Exist_Equalized_Diagonal() const;
 };
+
 #include "matrix.cpp"
 #endif
 /*===============================================================

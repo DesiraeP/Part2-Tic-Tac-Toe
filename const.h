@@ -1,7 +1,7 @@
 /*===============================================================
 CSUF, CPSC254 - SPRING 2022
 Contributor: Trong Pham, Adam Harb, Albert Paez
-Edit By: Desirae Prather
+Edit By: Desirae Prather, Zachary Worcester
 Project Title: Tictactoe Game
 Project Description: Standalone game allows user to beat AI.
   The winner is defined that has a cross
@@ -31,6 +31,7 @@ using namespace std;
 //Length of the board
 #define SIDE 3
 
+#define forever while(1)
 #define NEGATIVE_INFINITY -9999
 #define POSITIVE_INFINITY 10000
 //Symbol of AI movement(AI_MOVE) or PLAYER movement(PLAYER_MOVE)

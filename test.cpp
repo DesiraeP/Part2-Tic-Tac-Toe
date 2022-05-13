@@ -1,7 +1,7 @@
 /*===============================================================
 CSUF, CPSC254 - SPRING 2022
 Contributor: Trong Pham, Adam Harb, Albert Paez
-Edit By: Desirae Prather
+Edit By: Desirae Prather, Zachary Worcester
 Project Title: Tictactoe Game
 Project Description: Standalone game allows user to beat AI.
   The winner is defined that has a cross
@@ -15,9 +15,6 @@ License: Included but not limited of MIT, Harvard, CSUF, Github
 File Name: player.cpp
 File Description: Define all player operation declared in test.h
 ================================================================*/
-#pragma once
-#ifndef __TEST_CPP__
-#define __TEST_CPP__
 
 #include "test.h"
 Test::Test() : test_case_number(0) { /* nothing else */ } // constructor
@@ -105,15 +102,57 @@ void Test::Test_System() {
     cout <<"Do you want to play two player?(y/n):" << endl;
     cin >> choice;
     if (choice == 'n' || choice == 'N'){
+      // Kindly select The difficulty the player wishes to play at
+      int difficulty_choice = 5;
+      DifficultyType dif = NORMAL;
+
+      forever {
+	      bool valid_selection = true;
+
+	      cout << "Please select a difficulty\n\n"
+		      << "0) DUNCE\n"
+		      << "1) DADDY'S CAR\n"
+		      << "2) NORMAL\n"
+		      << "3) HURT ME PLENTY\n"
+		      << "4) IMPOSSIBLE\n"
+		      << "Make your selection:";
+
+	      cin >> difficulty_choice;
+
+	      switch(difficulty_choice) {
+		      case 0:
+			      dif = DUNCE;
+			      break;
+		      case 1:
+			      dif = EASY;
+			      break;
+		      case 2:
+			      dif = NORMAL;
+			      break;
+		      case 3:
+			      dif = HARD;
+			      break;
+		      case 4:
+			      dif = IMPOSSIBLE;
+			      break;
+		      default:
+			      valid_selection = false;
+			      cout << "Error: Please make a valid selection.\n\n";
+			      break;
+	      }
+	      
+	      if (valid_selection) break;
+      }
+
       //Kindly check if player wanna play first or AI plays first
       char player_choice;
       cout << "Do you want to start the game first?(y/n):" << endl;
       cin >> player_choice;
       //...then kickstart corresponding actions
       if (player_choice == 'n' || player_choice == 'N')
-        game.Play(AI, SINGLE_PLAYER);
+        game.Play(AI, SINGLE_PLAYER, dif);
       else if (player_choice == 'y' || player_choice == 'Y')
-        game.Play(PLAYER, SINGLE_PLAYER);
+        game.Play(PLAYER, SINGLE_PLAYER, dif);
       //Here is the place to check if our game object does check the invalid choices
       else
         cout << "It is an invalid choice" << endl;
@@ -131,5 +170,3 @@ void Test::Test_System() {
   std::cout << "Finished all tests \n";
   std::cout << "-------------------------------------------------------------\n";
 }
-
-#endif

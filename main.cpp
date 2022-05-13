@@ -14,9 +14,6 @@ License: Included but not limited of MIT, Harvard, CSUF, Github
 File Name: main.cpp
 File Description: Calling game driver file to load the game.
 ================================================================*/
-#pragma once
-#ifndef __MAIN_CPP__
-#define __MAIN_CPP__
 
 #include "tictactoe.h"
 #include "test.h"
@@ -28,5 +25,3 @@ int main() {
   test_.Test_System();
   return 0;
 }
-
-#endif

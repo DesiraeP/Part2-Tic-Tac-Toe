@@ -1,7 +1,7 @@
 /*===============================================================
 CSUF, CPSC254 - SPRING 2022
 Contributor: Trong Pham, Adam Harb, Albert Paez
-Edit By: Desirae Prather
+Edit By: Desirae Prather, Zachary Worcester
 Project Title: Tictactoe Game
 Project Description: Standalone game allows user to beat AI.
   The winner is defined that has a cross
@@ -22,6 +22,14 @@ File Description: Declare all game operators
 #include "const.h"
 #include "matrix.h"
 using namespace std;
+
+enum DifficultyType {
+	DUNCE = 1,
+	EASY = 3,
+	NORMAL = 5,
+	HARD  = 7,
+	IMPOSSIBLE = POSITIVE_INFINITY 
+};
 
 class Tictactoe
 {
@@ -49,11 +57,11 @@ class Tictactoe
     void Re_Assign_If_Bigger(int &bigger, const int comparee) const;
     void Re_Assign_If_Smaller(int &smaller, const int comparee) const;
     // For a specific movement, what is the score for that movement?
-    int Mini_Max(const int depth, const bool is_ai);
+    int Mini_Max(const int depth, const bool is_ai, const int max_depth = POSITIVE_INFINITY);
     // What is the best movement
-    int Best_Move(const int total_filled_cells);
+    int Best_Move(const int total_filled_cells, const int max_depth = POSITIVE_INFINITY);
     // Driver to play the game: human vs AI or human vs human
-    void Play(int whose_turn, int amount_players);
+    void Play(int whose_turn, int amount_players, const DifficultyType difficulty = DifficultyType::NORMAL);
     // Draw a line with SIDE cell in each row
     void Draw_A_Line() const;
     // Draw a separator between 2 cell of a row

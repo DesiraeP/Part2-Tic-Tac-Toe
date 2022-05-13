@@ -14,11 +14,11 @@ License: Included but not limited of MIT, Harvard, CSUF, Github
 File Name: Matrix.cpp
 File Description: Define all Matrix operators being declared in Matrix.h
 ================================================================*/
-#pragma once
-#ifndef __Matrix_CPP__
-#define __Matrix_CPP__
 
 #include "matrix.h"
+#ifndef __MATRIX_CPP__
+#define __MATRIX_CPP__
+
 template <class T> T& Matrix<T>::operator()(const int row, const int column) // get reference of value
 {
   return mat_[row][column];

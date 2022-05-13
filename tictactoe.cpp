@@ -1,7 +1,7 @@
 /*===============================================================
 CSUF, CPSC254 - SPRING 2022
 Contributor: Trong Pham, Adam Harb, Albert Paez
-Edit By: Desirae Prather
+Edit By: Desirae Prather, Zachary Worcster
 Project Title: Tictactoe Game
 Project Description: Standalone game allows user to beat AI.
   The winner is defined that has a cross
@@ -15,9 +15,6 @@ License: Included but not limited of MIT, Harvard, CSUF, Github
 File Name: tictactoe.h
 File Description: Define all game operators declared in tictactoe.h
 ================================================================*/
-#pragma once
-#ifndef __TICTACTOE_CPP__
-#define __TICTACTOE_CPP__
 
 #include "tictactoe.h"
 // Draw a line with SIDE cell in each row
@@ -101,7 +98,7 @@ void Tictactoe::Re_Assign_If_Smaller(int &smaller, const int comparee) const {
   smaller = (comparee < smaller) ? comparee : smaller;
 }
 // For a specific movement, what is the score for that movement?
-int Tictactoe::Mini_Max(const int depth, const bool is_ai) {
+int Tictactoe::Mini_Max(const int depth, const bool is_ai, const int max_depth) {
   // Score of the current movement and the best_score for any movement
   int score = 0;
   int best_score = 0;
@@ -112,7 +109,7 @@ int Tictactoe::Mini_Max(const int depth, const bool is_ai) {
   // game is NOT over yet!
   else {
     // Come on, let AI do some evaluations here and there...
-    if (depth < SIDE * SIDE) {
+    if (depth < SIDE * SIDE && depth < max_depth) {
       // This is AI turn
       if (is_ai) {
         //First, assign the best_score for the AIplayer as NEGATIVE INFINITY
@@ -152,7 +149,7 @@ int Tictactoe::Mini_Max(const int depth, const bool is_ai) {
   }
 }
 // What is the best movement, based on a specific movement index?
-int Tictactoe::Best_Move(const int total_filled_cells) {
+int Tictactoe::Best_Move(const int total_filled_cells, const int max_depth) {
   //First, let's assign the row and column indexes
   //and use it to compute the corresponding array index later
   int row_index = -1;
@@ -166,7 +163,7 @@ int Tictactoe::Best_Move(const int total_filled_cells) {
       //cout << "best_move:AI at (" << i << "," << j << ")" << endl;
       if (board_(i, j) == ' ') {
         board_(i, j) = AI_MOVE;
-        score = Mini_Max(total_filled_cells + 1, false);
+        score = Mini_Max(total_filled_cells + 1, false, max_depth);
         board_(i, j) = ' ';
         if (score > best_score) { // if this movement (i,j) actual a better move then....
           best_score = score; // re-assign best_score...
@@ -180,10 +177,11 @@ int Tictactoe::Best_Move(const int total_filled_cells) {
   // then return the point to the cell position format for use later
 }
 // Driver to play the game
-void Tictactoe::Play(int whose_turn, int amount_players) {
+void Tictactoe::Play(int whose_turn, int amount_players, const DifficultyType difficulty) {
   int total_filled_cells = 0; // total filed cell
   int row_index = 0;          // row position
   int col_index = 0;          // column position
+  int max_depth = static_cast<int>(difficulty);		      // difficulty type
 
   Initialize_Board_Value();
   Show_Instruction();
@@ -192,7 +190,7 @@ void Tictactoe::Play(int whose_turn, int amount_players) {
     while (!Is_Game_Over() && total_filled_cells != SIDE * SIDE) {
       int input_position;
       if (whose_turn == AI) { //hey my turn, i am an AI
-        Notify_Movement(Best_Move(total_filled_cells), true, SINGLE_PLAYER); //Show the movement
+        Notify_Movement(Best_Move(total_filled_cells, max_depth), true, SINGLE_PLAYER); //Show the movement
         Next_Turn(whose_turn, total_filled_cells); //And move to next turn
       }
       // else if whose_turn = PLAYER
@@ -333,4 +331,3 @@ char Tictactoe::Get_Element(const int row, const int column) const {
 char Tictactoe::Get_Element(const int index) const {
   return board_(index);
 }
-#endif
