@@ -1,7 +1,7 @@
 /*===============================================================
 CSUF, CPSC254 - SPRING 2022
 Contributor: Trong Pham, Adam Harb, Albert Paez
-Edit By: Desirae Prather, Zachary Worcster
+Edit By: Desirae Prather, Zachary Worcster, Taylor Ramsay
 Project Title: Tictactoe Game
 Project Description: Standalone game allows user to beat AI.
   The winner is defined that has a cross
@@ -37,8 +37,14 @@ void Tictactoe::Draw_Board() const {
   for (int i = 0; i < SIDE; i++) {
     cout << "\t\t ";
     for (int j = 0; j < SIDE; j++) {
-      cout << board_(i, j) << " ";
-      Draw_Separator(j);
+      auto iter = positions.find(make_pair(i, j));
+      if (iter != positions.end()){
+        cout << iter->second << " ";
+        Draw_Separator(j);
+      }else {
+        cout << board_(i, j) << " ";
+        Draw_Separator(j);
+      }
     }
     Draw_A_Line();
   }
@@ -173,6 +179,7 @@ int Tictactoe::Best_Move(const int total_filled_cells, const int max_depth) {
       }
     }
   }
+  positions.erase(make_pair(row_index, col_index));
   return row_index * SIDE + col_index;
   // then return the point to the cell position format for use later
 }
@@ -201,6 +208,7 @@ void Tictactoe::Play(int whose_turn, int amount_players, const DifficultyType di
         cin >> input_position;
         input_position--; //convert it to the real array index
         if (Is_Valid_Movement(input_position)) { //what if it is a valid movement?
+          positions.erase(positionsKey.find(input_position + 1)->second);
           Notify_Movement(input_position, false, SINGLE_PLAYER); //Show the movement to screen
           Next_Turn(whose_turn, total_filled_cells); //And move to next turn now
         } else
@@ -222,11 +230,12 @@ void Tictactoe::Play(int whose_turn, int amount_players, const DifficultyType di
         cin >> input_position;
         input_position--; //convert it to the real array index
         if (Is_Valid_Movement(input_position)) { //what if it is a valid movement?
+          positions.erase(positionsKey.find(input_position + 1)->second);
           Notify_Movement(input_position, true, MULTI_PLAYER); //Show the movement to screen
           Next_Turn(whose_turn, total_filled_cells); //And move to next turn now
         } else
           Is_Filled_Or_Out_Of_Board(input_position); //Make sure to check end game!
-        
+
       }
       // else if whose_turn = PLAYER 2
       else {
@@ -237,6 +246,7 @@ void Tictactoe::Play(int whose_turn, int amount_players, const DifficultyType di
         cin >> input_position;
         input_position--; //convert it to the real array index
         if (Is_Valid_Movement(input_position)) { //what if it is a valid movement?
+          positions.erase(positionsKey.find(input_position + 1)->second);
           Notify_Movement(input_position, false, MULTI_PLAYER); //Show the movement to screen
           Next_Turn(whose_turn, total_filled_cells); //And move to next turn now
         } else
@@ -250,11 +260,15 @@ void Tictactoe::Play(int whose_turn, int amount_players, const DifficultyType di
 
 // Is game a DRAW or who actually won?
 void Tictactoe::Is_A_Draw_Or_Winnable(const int total_filled_cells,
-    int &whose_turn) const {
+    int &whose_turn) {
   if (!Is_Game_Over() && total_filled_cells == SIDE * SIDE) {
     cout << "It's a draw" << endl;
+    // Resets position map
+    Reset_Position_Map();
   } else { // If there is one winner, who is that?
     // If there is one winner, who is that?
+    // Resets position map
+    Reset_Position_Map();
     if (whose_turn == AI)
       whose_turn = PLAYER;
     else if (whose_turn == PLAYER)// if whose_turn == PLAYER
@@ -323,6 +337,13 @@ void Tictactoe::Notify_Movement(const int input_position, bool is_ai_or_p1, int 
       cout << endl << "PLAYER 1 filled spot number " << input_position + 1 << endl;
     }
   }
+}
+
+// For resetting the positions map for new games
+void Tictactoe::Reset_Position_Map() {
+  positions = { {make_pair(0, 0), '1'}, {make_pair(0, 1), '2'}, {make_pair(0, 2), '3'},
+   {make_pair(1, 0), '4'}, {make_pair(1, 1), '5'}, {make_pair(1, 2), '6'},
+   {make_pair(2, 0), '7'}, {make_pair(2, 1), '8'}, {make_pair(2, 2), '9'} };
 }
 // For testing purpose of getting an element value
 char Tictactoe::Get_Element(const int row, const int column) const {

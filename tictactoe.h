@@ -1,7 +1,7 @@
 /*===============================================================
 CSUF, CPSC254 - SPRING 2022
 Contributor: Trong Pham, Adam Harb, Albert Paez
-Edit By: Desirae Prather, Zachary Worcester
+Edit By: Desirae Prather, Zachary Worcester, Taylor Ramsay
 Project Title: Tictactoe Game
 Project Description: Standalone game allows user to beat AI.
   The winner is defined that has a cross
@@ -21,6 +21,7 @@ File Description: Declare all game operators
 
 #include "const.h"
 #include "matrix.h"
+#include <map>
 using namespace std;
 
 enum DifficultyType {
@@ -28,13 +29,20 @@ enum DifficultyType {
 	EASY = 3,
 	NORMAL = 5,
 	HARD  = 7,
-	IMPOSSIBLE = POSITIVE_INFINITY 
+	IMPOSSIBLE = POSITIVE_INFINITY
 };
 
 class Tictactoe
 {
   private:
     Matrix<char> board_;
+		
+		map<pair<int, int>, char> positions = { {make_pair(0, 0), '1'}, {make_pair(0, 1), '2'}, {make_pair(0, 2), '3'},
+	   																				{make_pair(1, 0), '4'}, {make_pair(1, 1), '5'}, {make_pair(1, 2), '6'},
+	   																				{make_pair(2, 0), '7'}, {make_pair(2, 1), '8'}, {make_pair(2, 2), '9'} };
+		map<int, pair<int, int>> positionsKey = { {1, make_pair(0, 0)}, {2, make_pair(0, 1)}, {3, make_pair(0, 2)},
+		 																					{4, make_pair(1, 0)}, {5, make_pair(1, 1)}, {6, make_pair(1, 2)},
+																							{7, make_pair(2, 0)}, {8, make_pair(2, 1)}, {9, make_pair(2, 2)} };
 
   public:
     // Display current board status
@@ -68,7 +76,7 @@ class Tictactoe
     void Draw_Separator(const int j) const;
     // Is game a DRAW or who actually won?
     void Is_A_Draw_Or_Winnable(const int total_filled_cells,
-    int &whose_turn) const;
+    int &whose_turn);
     // List out all current valid position
     void List_Valid_Position() const;
     // If the selected position is a valid movement
@@ -82,6 +90,8 @@ class Tictactoe
     // Fot testing purpose of getting an element value
     char Get_Element(const int row, const int column) const;
     char Get_Element(const int index) const;
+		// For resetting the positions map for new games
+		void Reset_Position_Map();
   };
 
   #endif
